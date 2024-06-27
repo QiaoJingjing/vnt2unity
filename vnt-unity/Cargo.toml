@@ -1,0 +1,17 @@
+[package]
+name = "vnt-unity"
+version = "1.2.10"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+vnt = {path="../vnt"}
+parking_lot = "0.12.1"
+
+[lib]
+crate-type = ["cdylib"]
+
+[build-dependencies]
+csbindgen = "1.8.0"
