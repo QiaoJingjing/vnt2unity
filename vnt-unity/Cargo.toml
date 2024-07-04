@@ -3,12 +3,17 @@ name = "vnt-unity"
 version = "1.2.10"
 edition = "2021"
 
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-vnt = {path="../vnt"}
+os_info = "3.7.0"
+vnt = { path = "../vnt", package = "vnt", default-features = false }
 parking_lot = "0.12.1"
+getopts = "0.2.21"
+common = { path = "../common" }
+anyhow = "1.0.82"
+
 
 [lib]
 crate-type = ["cdylib"]

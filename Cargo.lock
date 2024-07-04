@@ -1747,7 +1747,11 @@ dependencies = [
 name = "vnt-unity"
 version = "1.2.10"
 dependencies = [
+ "anyhow",
+ "common",
  "csbindgen",
+ "getopts",
+ "os_info",
  "parking_lot",
  "vnt",
 ]

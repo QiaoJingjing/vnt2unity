@@ -16,7 +16,18 @@ namespace CsBindgen
 
 
 
+        [DllImport(__DllName, EntryPoint = "my_add", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern int my_add(int x, int y);
 
+        [DllImport(__DllName, EntryPoint = "parse_command_line", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern CommandResult parse_command_line(str* command_str);
+
+
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal unsafe partial struct CommandResult
+    {
     }
 
 

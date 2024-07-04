@@ -51,3 +51,9 @@ file_config = []
 embed-manifest = "1.4.0"
 rand = "0.8.5"
 chrono = "0.4.23"
+
+
+[profile.release]
+# 在 release 模式下，设置为 true 表示编译为 GUI 应用程序
+# 注意：此配置只在 Windows 平台下生效
+windows = { gui_app = true }

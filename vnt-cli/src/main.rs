@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 use anyhow::anyhow;
 use std::io;
 use std::net::Ipv4Addr;
@@ -13,6 +14,9 @@ use vnt::channel::UseChannelType;
 use vnt::cipher::CipherModel;
 use vnt::compression::Compressor;
 use vnt::core::{Config, Vnt};
+
+
+
 
 #[cfg(feature = "command")]
 mod command;
@@ -96,6 +100,7 @@ fn main() {
             return;
         }
     };
+
     if matches.opt_present("h") || args.len() == 1 {
         print_usage(&program, opts);
         return;
