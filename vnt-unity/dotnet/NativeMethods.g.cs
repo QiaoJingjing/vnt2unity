@@ -12,7 +12,7 @@ namespace CsBindgen
 {
     internal static unsafe partial class NativeMethods
     {
-        const string __DllName = "example";
+        const string __DllName = "vnt_unity";
 
 
 
@@ -20,7 +20,7 @@ namespace CsBindgen
         public static extern int my_add(int x, int y);
 
         [DllImport(__DllName, EntryPoint = "parse_command_line", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern CommandResult parse_command_line(str* command_str);
+        public static extern CommandResult parse_command_line(String command_str);
 
 
     }
@@ -28,6 +28,8 @@ namespace CsBindgen
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe partial struct CommandResult
     {
+        public short result_code;
+        public String message;
     }
 
 

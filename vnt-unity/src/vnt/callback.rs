@@ -15,15 +15,15 @@ pub struct VntRunResult {
 
 impl VntCallback for VntHandler {
     fn success(&self){
-
+        println!("====== Connect Successfully ======" );
     }
 
     fn create_tun(&self, info: DeviceInfo)  {
-
+        println!("create_tun {}", info)
     }
 
     fn connect(&self, info: ConnectInfo)  {
-
+        println!("connect {}", info)
     }
 
     fn handshake(&self, info: HandshakeInfo) -> bool  {
@@ -32,6 +32,7 @@ impl VntCallback for VntHandler {
     }
 
     fn register(&self, info: RegisterInfo) -> bool  {
+        println!("register {}", info);
         true
     }
 

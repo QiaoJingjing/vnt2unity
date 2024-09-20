@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::env;
 use std::net::Ipv4Addr;
 use std::ptr::null;
 use std::str::FromStr;
@@ -85,22 +86,6 @@ pub fn parse_command_str(command_str: &str) -> Option<Vec<(&str, String)>> {
 
 
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_main_logic() {
-        let command_str = "-k 123456 -s shf1.pop.teledriving.com:29872 --tcp --use-channel relay -d GCA9056a";
-        if let Some(parsed_command) = parse_command_str(command_str) {
-            for (opt, arg) in parsed_command {
-                println!("Option: {}, Argument: {}", opt, arg);
-            }
-        }
-    }
-}
-
-
 
 
 // example one
@@ -110,6 +95,7 @@ pub extern "C" fn my_add(x: i32, y: i32) -> i32 {
 }
 
 // example one
+#[repr(C)]
 pub struct  CommandResult{
     pub result_code: i16,
     pub message:String
@@ -131,7 +117,7 @@ impl CommandResult {
     }
 }
 #[no_mangle]
-pub extern "C" fn parse_command_line(command_str: &str) -> CommandResult {
+pub extern "C" fn parse_command_line(command_str: String) -> CommandResult {
     let mut result=CommandResult::new ();
     let mut opts = Options::new();
     opts.optopt("k", "", "组网标识", "<token>");
@@ -173,9 +159,9 @@ pub extern "C" fn parse_command_line(command_str: &str) -> CommandResult {
     opts.optflag("h", "help", "帮助");
 
     let args: Vec<String> = command_str.split_whitespace().map(String::from).collect();
+    println!("{:?}", args);
 
-
-    let matches = match opts.parse(&args[1..]) {
+    let matches = match opts.parse(&args) {
         Ok(m) => m,
         Err(_) => {
             result.set_result_code(-1);
@@ -394,7 +380,9 @@ pub extern "C" fn parse_command_line(command_str: &str) -> CommandResult {
         }
     }
 
+    println!("命令解析执行结束");
 
+    start(config,cmd);
     result
 
 }
@@ -403,16 +391,42 @@ mod callback;
 
 fn start(config:Config,_show_cmd:bool)
 {
+    println!("Start Vnt");
     let vnt_util = Vnt::new(config, callback::VntHandler {}).unwrap();
 
 
     vnt_util.wait()
 
 }
+
+pub fn main()
+{
+    let command_str:String = "-k 123456 -s shf1.pop.teledriving.com:29872 --tcp --use-channel relay -d GCA9056a --cmd".parse().unwrap();
+    let result = parse_command_line(command_str);
+    println!("{}{}", result.result_code, result.message);
+}
 #[test]
 fn test_parse_command_line() {
-    let command_str = "-k 123456 -s shf1.pop.teledriving.com:29872 --tcp --use-channel relay -d GCA9056a --cmd";
+
+    let command_str:String = "-k 123456 -s shf1.pop.teledriving.com:29872 --tcp --use-channel relay -d GCA9056a --cmd".parse().unwrap();
     let result = parse_command_line(command_str);
     println!("{}{}", result.result_code, result.message);
 
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_main_logic() {
+        let command_str = "-k 123456 -s shf1.pop.teledriving.com:29872 --tcp --use-channel relay -d GCA9056a";
+        if let Some(parsed_command) = parse_command_str(command_str) {
+            for (opt, arg) in parsed_command {
+                println!("Option: {}, Argument: {}", opt, arg);
+            }
+        }
+    }
+}
+
